@@ -21,6 +21,8 @@ public class Contact {
     private String phone;
     private String address;
 
+   private String city;
+
 //    public Long getId() {
 //        return id;
 //    }
