@@ -1,10 +1,9 @@
 package com.bridgelabz.addressBookApp.controller;
 
 import com.bridgelabz.addressBookApp.dto.AuthUserDTO;
+import com.bridgelabz.addressBookApp.dto.MailDTO;
 import com.bridgelabz.addressBookApp.service.AuthenticationService;
 import com.bridgelabz.addressBookApp.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,9 +13,7 @@ import com.bridgelabz.addressBookApp.dto.LoginDTO;
 
 public class AuthenticationController {
 
-    @Autowired
     EmailService emailService;
-    @Autowired
     AuthenticationService authenticationService;
 
     public AuthenticationController(EmailService emailService, AuthenticationService authenticationService) {
@@ -35,7 +32,11 @@ public class AuthenticationController {
         return authenticationService.login(user);
     }
 
-
+    //==============================Sendmail======================//
+    @PostMapping(path="/sendMail")
+    public String sendMail(@RequestBody MailDTO user){ emailService.sendEmail(user.getTo(), user.getSubject(), user.getBody());
+        return "Mail Sent";
+    }
 
 
 }
