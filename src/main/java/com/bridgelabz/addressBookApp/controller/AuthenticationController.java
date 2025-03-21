@@ -4,9 +4,8 @@ import com.bridgelabz.addressBookApp.dto.AuthUserDTO;
 import com.bridgelabz.addressBookApp.dto.MailDTO;
 import com.bridgelabz.addressBookApp.service.AuthenticationService;
 import com.bridgelabz.addressBookApp.service.EmailService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import com.bridgelabz.addressBookApp.dto.LoginDTO;
 
 @RestController
@@ -36,6 +35,18 @@ public class AuthenticationController {
     @PostMapping(path="/sendMail")
     public String sendMail(@RequestBody MailDTO user){ emailService.sendEmail(user.getTo(), user.getSubject(), user.getBody());
         return "Mail Sent";
+    }
+
+    // 🔹 Forgot Password (User provides email & new phone)
+    @PutMapping("/forgotPassword/{email}")
+    public ResponseEntity<String> forgotPassword(@PathVariable String email, @RequestBody PasswordResetDTO passwordResetDTO) {
+        return ResponseEntity.ok(authenticationService.forgotPassword(email, passwordResetDTO.getNewPhone()));
+    }
+
+    // 🔹 Reset Password (User provides email, current phone & new phone)
+    @PutMapping("/resetPassword/{email}")
+    public ResponseEntity<String> resetPassword(@PathVariable String email, @RequestBody PasswordResetDTO passwordResetDTO) {
+        return ResponseEntity.ok(authenticationService.resetPassword(email, passwordResetDTO.getCurrentPhone(), passwordResetDTO.getNewPhone()));
     }
 
 
